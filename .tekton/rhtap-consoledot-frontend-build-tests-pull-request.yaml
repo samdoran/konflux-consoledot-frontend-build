@@ -20,17 +20,17 @@ metadata:
 spec:
   params:
   - name: dockerfile
-    value: https://raw.githubusercontent.com/nodeshift-starters/devfile-sample/main/Dockerfile
+    value: ./Dockerfile
   - name: git-url
     value: '{{repo_url}}'
+  - name: revision
+    value: '{{revision}}'
   - name: image-expires-after
     value: 5d
   - name: output-image
     value: quay.io/redhat-user-workloads/rhtap-migration-tenant/rhtap-consoledot-frontend-build/rhtap-consoledot-frontend-build-tests:on-pr-{{revision}}
   - name: path-context
     value: tests/react-test-app
-  - name: revision
-    value: '{{revision}}'
   pipelineSpec:
     finally:
     - name: show-sbom
@@ -208,6 +208,21 @@ spec:
       workspaces:
       - name: source
         workspace: workspace
+    - name: inject-dockerfile
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: '{{source_url}}'
+          - name: revision
+            value: '{{source_branch}}'
+          - name: pathInRepo
+            value: tasks/dummy-dockerfile/dummy-dockerfile.yaml
+      workspaces:
+      - name: dockerfilews
+        workspace: workspace
+      runAfter:
+      - clone-repository
     - name: build-container
       params:
       - name: IMAGE
@@ -226,6 +241,7 @@ spec:
         value: $(tasks.clone-repository.results.commit)
       runAfter:
       - prefetch-dependencies
+      - inject-dockerfile
       taskRef:
         params:
         - name: name
