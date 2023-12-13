@@ -6,24 +6,25 @@ metadata:
 spec:
   description: >-
     Tekton task to create a new dockerfile and inject it into a workspace
-  params: 
+  params:
     - default: "source"
-      description: Subdirectory inside the `output` Workspace to clone the repo into.
+      description: directory in the `output` Workspace to clone the repo into.
       name: subdirectory
       type: string
-  workspaces: 
+  workspaces:
     - name: dockerfilews
       description: The workspace where the dockerfile is stored
       mountPath: /tmp
   steps:
-    - name: create-dockerfile  
+    - name: create-dockerfile
       image: registry.access.redhat.com/ubi9/ubi-minimal:9.3-1361.1699548032
       script: |
         #!/usr/bin/env sh
         set -xe
         if [ "$(workspaces.dockerfilews.bound)" == "true" ] ; then
-         echo -e "FROM alpine\nCMD ["echo","Hello World"]" > $(workspaces.dockerfilews.path)/$(params.subdirectory)/Dockerfile
-        else 
+         echo -e "FROM alpine\nCMD ["echo","Hello World"]" >\
+         $(workspaces.dockerfilews.path)/$(params.subdirectory)/Dockerfile
+        else
          echo "Task: inject-dockerfile failed, workspace is not bound"
          exit 1
-        fi        
+        fi
