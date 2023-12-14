@@ -1,0 +1,9 @@
+.insd-c-dashboard {
+    &__icon {
+        &-finished { fill: var(--pf-global--success-color--200); }
+        &-running { fill: var(--pf-global--primary-color--100); }
+        &-warning { fill: var(--pf-global--warning-color--100); }
+        &-critical { fill: var(--pf-global--danger-color--100); }
+        &-info { fill: var(--pf-global--info-color--100); }
+    }
+}

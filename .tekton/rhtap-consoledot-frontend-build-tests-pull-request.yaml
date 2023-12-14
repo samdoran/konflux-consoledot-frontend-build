@@ -8,7 +8,7 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
-      == "main" && ( "tests/react-test-app/***".pathChanged() || ".tekton/rhtap-consoledot-frontend-build-tests-pull-request.yaml".pathChanged() || 
+      == "main" && ( "tests/insights-dashboard-master/***".pathChanged() || ".tekton/rhtap-consoledot-frontend-build-tests-pull-request.yaml".pathChanged() || 
       "tasks/***".pathChanged() )
   creationTimestamp: null
   labels:
@@ -30,7 +30,7 @@ spec:
   - name: output-image
     value: quay.io/redhat-user-workloads/rhtap-migration-tenant/rhtap-consoledot-frontend-build/rhtap-consoledot-frontend-build-tests:on-pr-{{revision}}
   - name: path-context
-    value: tests/react-test-app
+    value: tests/insights-dashboard-master
   pipelineSpec:
     finally:
     - name: show-sbom
