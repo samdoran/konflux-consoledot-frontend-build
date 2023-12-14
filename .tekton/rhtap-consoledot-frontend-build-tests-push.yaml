@@ -26,7 +26,7 @@ spec:
   - name: output-image
     value: quay.io/redhat-user-workloads/rhtap-migration-tenant/rhtap-consoledot-frontend-build/rhtap-consoledot-frontend-build-tests:{{revision}}
   - name: path-context
-    value: tests/react-test-app
+    value: tests/insights-dashboard-master
   pipelineSpec:
     finally:
     - name: show-sbom
