@@ -217,7 +217,7 @@ spec:
           - name: revision
             value: '{{source_branch}}'
           - name: pathInRepo
-            value: tasks/dummy-dockerfile/dummy-dockerfile.yaml
+            value: tasks/inject-dockerfile/inject-dockerfile.yaml
       workspaces:
       - name: dockerfilews
         workspace: workspace
