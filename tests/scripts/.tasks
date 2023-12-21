@@ -1,0 +1,8 @@
+# No need to test
+no_test_tasks=""
+
+# Tasks that need to be tested in the PR pipeline
+pr_tasks="inject-dockerfile"
+
+# Tasks that need to be tested in the push pipeline
+push_tasks="inject-dockerfile"
