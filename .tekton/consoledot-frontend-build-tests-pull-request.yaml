@@ -8,8 +8,8 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
-      == "main" && ( "tests/insights-dashboard-master/***".pathChanged() || ".tekton/consoledot-frontend-build-tests-pull-request.yaml".pathChanged()
-      )
+      == "main" && ( "tests/insights-dashboard-master/***".pathChanged() || ".tekton/consoledot-frontend-build-tests-pull-request.yaml".pathChanged() ||
+      "tasks/***".pathChanged() )
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rhtap-consoledot-frontend-build
@@ -20,7 +20,7 @@ metadata:
 spec:
   params:
   - name: dockerfile
-    value: https://raw.githubusercontent.com/nodeshift-starters/devfile-sample/main/Dockerfile
+    value: ./Dockerfile
   - name: git-url
     value: '{{repo_url}}'
   - name: image-expires-after
@@ -208,6 +208,21 @@ spec:
       workspaces:
       - name: source
         workspace: workspace
+    - name: inject-dockerfile
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: '{{source_url}}'
+          - name: revision
+            value: '{{source_branch}}'
+          - name: pathInRepo
+            value: tasks/inject-dockerfile/inject-dockerfile.yaml
+      workspaces:
+      - name: dockerfilews
+        workspace: workspace
+      runAfter:
+      - clone-repository
     - name: build-container
       params:
       - name: IMAGE
@@ -226,6 +241,7 @@ spec:
         value: $(tasks.clone-repository.results.commit)
       runAfter:
       - prefetch-dependencies
+      - inject-dockerfile
       taskRef:
         params:
         - name: name
