@@ -14,7 +14,7 @@ spec:
       name: subdirectory
       type: string
     - name: path-context
-      default: tests/insights-dashboard-master
+      default: ""
       description: path context directory inside the repo
       type: string
   results:
@@ -30,18 +30,75 @@ spec:
     - name: quay-expire-time
       type: string
       description: variable for quay's expiry time
+    - name: npm-build-script
+      type: string
+      description: npm script to run at build time
+    - name: yarn-build-script
+      type: string
+      description: yarn script to run at build time
+    - name: route-path
+      type: string
+      description: path for the app to be stored
+    - name: beta-route-path
+      type: string
+      description: path for the beta app to be stored
+    - name: preview-route-path
+      type: string
+      description: path for the preview app to be stored
+    - name: ci-root
+      type: string
+      description: root of the ci.sh script
+    - name: server-name
+      type: string
+      description: name of the server. If empty, same as the app name
+    - name: dist-folder
+      type: string
+      description: directory where the app.info.json will be written
   steps:
     - name: parse-build-deploy-script
       image: registry.access.redhat.com/ubi9/ubi-minimal:9.3-1361.1699548032
       script: |
-        #!/usr/bin/env sh
+        #!/bin/bash
         set -ex
-        script_path=$(workspaces.source.path)/$(params.subdirectory)/$(params.path-context)/build_deploy.sh
-        component=$(grep 'COMPONENT=' $script_path | awk -F= '{print $2}')
-        echo "$component" | tee "$(results.component.path)"
-        image=$(grep 'IMAGE=' $script_path | awk -F= '{print $2}')
-        echo "$image" | tee "$(results.image.path)"
-        node_version=$(grep 'NODE_BUILD_VERSION=' $script_path | awk -F= '{print $2}')
-        echo "$node_version" | tee "$(results.node-build-version.path)"
-        quay_expire_time=$(grep 'QUAY_EXPIRE_TIME=' $script_path | awk -F= '{print $2}')
-        echo "$quay_expire_time" | tee "$(results.quay-expire-time.path)"
+
+        # function to convert variables from kebab-case to SCREAM_SNAKE_CASE
+        function convert_var_name() {
+          echo "$1" | tr '-' '_' | tr '[:lower:]' '[:upper:]'
+        }
+
+        cd $(workspaces.source.path)/$(params.subdirectory)\
+        /$(params.path-context)
+
+        script_path=build_deploy.sh
+
+        results="component image node-build-version quay-expire-time
+        npm-build-script yarn-build-script route-path beta-route-path
+        preview-route-path ci-root server-name dist-folder"
+
+        for result in $results
+        do
+          RESULT=$(convert_var_name "$result")
+          result_value="$(grep "$RESULT=" $script_path | awk -F= '{print $2}')"
+          echo -n "$result_value" | tee /workspace/$result
+        done
+
+        # I can't write to results from a for using a variable
+        cat /workspace/component | tee $(results.component.path)
+        cat /workspace/image | tee $(results.image.path)
+        cat /workspace/ci-root | tee $(results.ci-root.path)
+        cat /workspace/server-name | tee $(results.server-name.path)
+        cat /workspace/dist-folder | tee $(results.dist-folder.path)
+        cat /workspace/node-build-version \
+        | tee $(results.node-build-version.path)
+        cat /workspace/quay-expire-time \
+        | tee $(results.quay-expire-time.path)
+        cat /workspace/npm-build-script \
+        | tee $(results.npm-build-script.path)
+        cat /workspace/yarn-build-script \
+        | tee $(results.yarn-build-script.path)
+        cat /workspace/route-path \
+        | tee $(results.route-path.path)
+        cat /workspace/beta-route-path \
+        | tee $(results.beta-route-path.path)
+        cat /workspace/preview-route-path \
+        | tee $(results.preview-route-path.path)
