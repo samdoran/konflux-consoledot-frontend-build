@@ -11,6 +11,10 @@ spec:
       description: directory in the `output` Workspace to clone the repo into.
       name: subdirectory
       type: string
+    - name: path-context
+      default: tests/insights-dashboard-master
+      description: path context directory inside the repo
+      type: string
   workspaces:
     - name: dockerfilews
       description: The workspace where the dockerfile is stored
@@ -23,7 +27,7 @@ spec:
         set -xe
         if [ "$(workspaces.dockerfilews.bound)" == "true" ] ; then
          echo -e "FROM alpine\nCMD ["echo","Hello World"]" >\
-         $(workspaces.dockerfilews.path)/$(params.subdirectory)/Dockerfile
+         $(workspaces.dockerfilews.path)/$(params.subdirectory)/$(params.path-context)/Dockerfile
         else
          echo "Task: inject-dockerfile failed, workspace is not bound"
          exit 1

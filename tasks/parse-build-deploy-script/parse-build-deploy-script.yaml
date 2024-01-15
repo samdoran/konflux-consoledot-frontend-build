@@ -1,0 +1,47 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: parse-build-deploy-script
+spec:
+  description: >-
+    Tekton task to get the env variables of a workspace using build_deploy.sh
+  workspaces:
+    - name: source
+  params:
+    - default: "source"
+      description: directory in the `output` workspace to clone the repo into.
+      name: subdirectory
+      type: string
+    - name: path-context
+      default: tests/insights-dashboard-master
+      description: path context directory inside the repo
+      type: string
+  results:
+    - name: component
+      type: string
+      description: variable for the component's name
+    - name: image
+      type: string
+      description: variable for the component's image
+    - name: node-build-version
+      type: string
+      description: variable for node's version
+    - name: quay-expire-time
+      type: string
+      description: variable for quay's expiry time
+  steps:
+    - name: parse-build-deploy-script
+      image: registry.access.redhat.com/ubi9/ubi-minimal:9.3-1361.1699548032
+      script: |
+        #!/usr/bin/env sh
+        set -ex
+        script_path=$(workspaces.source.path)/$(params.subdirectory)/$(params.path-context)/build_deploy.sh
+        component=$(grep 'COMPONENT=' $script_path | awk -F= '{print $2}')
+        echo "$component" | tee "$(results.component.path)"
+        image=$(grep 'IMAGE=' $script_path | awk -F= '{print $2}')
+        echo "$image" | tee "$(results.image.path)"
+        node_version=$(grep 'NODE_BUILD_VERSION=' $script_path | awk -F= '{print $2}')
+        echo "$node_version" | tee "$(results.node-build-version.path)"
+        quay_expire_time=$(grep 'QUAY_EXPIRE_TIME=' $script_path | awk -F= '{print $2}')
+        echo "$quay_expire_time" | tee "$(results.quay-expire-time.path)"
