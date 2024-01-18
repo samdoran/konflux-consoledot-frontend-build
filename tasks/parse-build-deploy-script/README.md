@@ -1,3 +1,10 @@
 # parse-build-deploy-script
 
-Task which runs "build_deploy.sh" and returns it's env variables as a result
+Tekton task that collects env variables to pass to other tasks in the pipeline.
+
+## Parameters
+
+| Name | Description | Optional | default |
+|------|-------------|----------|---------|
+| subdirectory | directory in the `output` workspace to clone the repo into. | Yes | source |
+| path-context | path context directory inside the repo | Yes | "" |
