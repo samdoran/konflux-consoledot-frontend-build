@@ -1,10 +1,10 @@
 # No need to test
-no_test_tasks=""
+no_test_tasks="inject-dockerfile"
 
 # Tasks that need to be tested in the PR pipeline,
 # names are separated by a space
-pr_tasks="inject-dockerfile parse-build-deploy-script"
+pr_tasks="parse-build-deploy-script create-frontend-dockerfile"
 
 # Tasks that need to be tested in the push pipeline
 # names are separated by a space
-push_tasks="inject-dockerfile parse-build-deploy-script"
+push_tasks="parse-build-deploy-script"
