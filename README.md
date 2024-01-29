@@ -1,6 +1,57 @@
 # rhtap-consoledot-frontend-build
 Repository to store Tekton pipelines and tasks to build containerized frontends from consoledot
 
+## How to use the tasks in this repository
+
+To be able to build a frontend in Konflux, you will need to use the following two Tekton tasks:
+
+- [parse-build-deploy-script](./tasks/parse-build-deploy-script/parse-build-deploy-script.yaml)
+- [create-frontend-dockerfile](./tasks/create-frontend-dockerfile/create-frontend-dockerfile.yaml)
+
+You will need to add these two tasks in your two Tekton pipelines inside your `.tekton` directory. You can find an example on how to do this in this same repo in the `.tekton` directory.
+
+### parse-build-deploy-script task
+
+You can find the example on how we are using it for the tests in this repository in the [PR pipeline](.tekton/consoledot-frontend-build-tests-pull-request.yaml#L211), and in the [on push pipeline](.tekton/consoledot-frontend-build-tests-push.yaml#L207). 
+
+Important points to consider:
+
+- Don't forget to check how to use the parameters in this [file](./tasks/parse-build-deploy-script/README.md)
+- The `taskRef` in your pipeline should be like this:
+```yaml
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/ernesgonzalez33/rhtap-consoledot-frontend-build
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: tasks/parse-build-deploy-script/parse-build-deploy-script.yaml
+```
+
+### create-frontend-dockerfile task
+
+You can find the example on how we are using it for the tests in this repository in the [PR pipeline](.tekton/consoledot-frontend-build-tests-pull-request.yaml#L229), and in the [on push pipeline](.tekton/consoledot-frontend-build-tests-push.yaml#L225). 
+
+Important points to consider:
+
+- Don't forget to check how to use the parameters in this [file](./tasks/create-frontend-dockerfile/README.md)
+- The `taskRef` in your pipeline should be like this:
+```yaml
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/ernesgonzalez33/rhtap-consoledot-frontend-build
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: tasks/create-frontend-dockerfile/create-frontend-dockerfile.yaml
+```
+- Make sure to update the `runAfter` attribute of the `build-container` task to run after this task and `prefetch-dependencies`.
+- The `is-pr` parameter must be set to `"true"` in the PR pipeline and to `"false"` in the push pipeline.
+
 ## How to use the tests
 
 All the tasks need to be tested in the pipelines in the `.tekton` directory. Make sure the name of your task is the same name
