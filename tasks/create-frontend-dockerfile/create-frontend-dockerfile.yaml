@@ -78,12 +78,12 @@ spec:
         source_path=$(workspaces.source.path)/$(params.subdirectory)/$(params.path-context)
 
         cp -r  $source_path/. /workspace
-        ls -a /workspace
-        sh /container_workspace/universal_build.sh
+        cd /container_workspace
+        bash universal_build.sh
 
-        cp /container_workspace/Dockerfile $source_path
-        cp /container_workspace/Caddyfile $source_path
-        cp -r /container_workspace/dist $source_path
+        cp Dockerfile $source_path
+        cp Caddyfile $source_path
+        cp -r dist/ $source_path
       env:
         - name: COMPONENT
           value: $(params.component)
