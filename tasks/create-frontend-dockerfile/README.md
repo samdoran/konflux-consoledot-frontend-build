@@ -16,7 +16,6 @@ Tekton task that uses the frontend builder container to create a Dockerfile to b
 | route-path         | path for the app to be stored                                     | Yes      | ""            |
 | beta-route-path    | path for the beta app to be stored                                | Yes      | ""            |
 | preview-route-path | path for the preview app to be stored                             | Yes      | ""            |
-| is-pr              | true if it comes from a PR                                        | Yes      | "true"        |
 | ci-root            | root of the ci.sh script                                          | Yes      | ""            |
 | server-name        | name of the server. If empty, same as the app name                | Yes      | ""            |
 | dist-folder        | directory where the app.info.json will be written                 | Yes      | ""            |
