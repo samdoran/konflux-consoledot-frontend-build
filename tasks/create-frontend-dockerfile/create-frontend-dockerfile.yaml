@@ -49,10 +49,6 @@ spec:
       type: string
       description: path for the preview app to be stored
       default: ""
-    - name: is-pr
-      type: string
-      description: true if it comes from a PR
-      default: "true"
     - name: ci-root
       type: string
       description: root of the ci.sh script
@@ -109,7 +105,7 @@ spec:
         - name: PREVIEW_ROUTE_PATH
           value: $(params.preview-route-path)
         - name: IS_PR
-          value: $(params.is-pr)
+          value: "false"
         - name: CI_ROOT
           value: $(params.ci-root)
         - name: SERVER_NAME
