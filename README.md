@@ -29,6 +29,7 @@ Important points to consider:
           - name: pathInRepo
             value: tasks/parse-build-deploy-script/parse-build-deploy-script.yaml
 ```
+- Make sure to create the `runAfter` attribute and set it up to run after the `clone-repository`.
 
 ### create-frontend-dockerfile task
 
@@ -49,8 +50,7 @@ Important points to consider:
           - name: pathInRepo
             value: tasks/create-frontend-dockerfile/create-frontend-dockerfile.yaml
 ```
-- Make sure to update the `runAfter` attribute of the `build-container` task to run after this task and `prefetch-dependencies`.
-- The `is-pr` parameter must be set to `"true"` in the PR pipeline and to `"false"` in the push pipeline.
+- Make sure to update the `runAfter` attribute of the `build-container` task to run after this task and `prefetch-dependencies`, and not after `clone-repository` as it was set up.
 
 ## How to use the tests
 
