@@ -7,4 +7,4 @@ pr_tasks="parse-build-deploy-script create-frontend-dockerfile"
 
 # Tasks that need to be tested in the push pipeline
 # names are separated by a space
-push_tasks="parse-build-deploy-script"
+push_tasks="parse-build-deploy-script create-frontend-dockerfile"
