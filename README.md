@@ -1,4 +1,4 @@
-# rhtap-consoledot-frontend-build
+# konflux-consoledot-frontend-build
 Repository to store Tekton pipelines and tasks to build containerized frontends from consoledot
 
 ## How to use the tasks in this repository
@@ -23,7 +23,7 @@ Important points to consider:
         resolver: git
         params:
           - name: url
-            value: https://github.com/ernesgonzalez33/rhtap-consoledot-frontend-build
+            value: https://github.com/ernesgonzalez33/konflux-consoledot-frontend-build
           - name: revision
             value: main
           - name: pathInRepo
@@ -44,7 +44,7 @@ Important points to consider:
         resolver: git
         params:
           - name: url
-            value: https://github.com/ernesgonzalez33/rhtap-consoledot-frontend-build
+            value: https://github.com/ernesgonzalez33/konflux-consoledot-frontend-build
           - name: revision
             value: main
           - name: pathInRepo
