@@ -23,7 +23,7 @@ Important points to consider:
         resolver: git
         params:
           - name: url
-            value: https://github.com/ernesgonzalez33/konflux-consoledot-frontend-build
+            value: https://github.com/RedHatInsights/konflux-consoledot-frontend-build
           - name: revision
             value: main
           - name: pathInRepo
@@ -44,7 +44,7 @@ Important points to consider:
         resolver: git
         params:
           - name: url
-            value: https://github.com/ernesgonzalez33/konflux-consoledot-frontend-build
+            value: https://github.com/RedHatInsights/konflux-consoledot-frontend-build
           - name: revision
             value: main
           - name: pathInRepo
