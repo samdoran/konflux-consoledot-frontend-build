@@ -25,7 +25,7 @@ Important points to consider:
           - name: url
             value: https://github.com/RedHatInsights/konflux-consoledot-frontend-build
           - name: revision
-            value: main
+            value: <latest-commit-sha-in-above-repo>
           - name: pathInRepo
             value: tasks/parse-build-deploy-script/parse-build-deploy-script.yaml
 ```
@@ -46,7 +46,7 @@ Important points to consider:
           - name: url
             value: https://github.com/RedHatInsights/konflux-consoledot-frontend-build
           - name: revision
-            value: main
+            value: <latest-commit-sha-in-above-repo>
           - name: pathInRepo
             value: tasks/create-frontend-dockerfile/create-frontend-dockerfile.yaml
 ```
