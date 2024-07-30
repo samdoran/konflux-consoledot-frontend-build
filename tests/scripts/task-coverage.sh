@@ -16,8 +16,8 @@ do
     grep "$task" "$tasks_lists_file_path" > /dev/null || { echo "$task not found in .tasks file. Please add it to the corresponding list(s)" >&2; exit 1; }
 done
 
-pr_file_path=.tekton/consoledot-frontend-build-tests-pull-request.yaml
-push_file_path=.tekton/consoledot-frontend-build-tests-push.yaml
+pr_file_path=.tekton/konflux-consoledot-frontend-build-pull-request.yaml
+push_file_path=.tekton/konflux-consoledot-frontend-build-push.yaml
 
 # Check that PR tasks are being tested in the PR pipeline
 for task in $pr_tasks
