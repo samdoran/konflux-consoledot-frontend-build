@@ -6,6 +6,9 @@ metadata:
 spec:
   description: >-
     Tekton task to create a dockerfile for the frontend builds
+  volumes:
+    - name: workdir
+      emptyDir: {}
   params:
     - default: "source"
       description: directory in the `output` Workspace to clone the repo into.
@@ -61,9 +64,6 @@ spec:
       type: string
       description: directory where the app.info.json will be written
       default: ""
-  workspaces:
-    - name: source
-      description: workspace where the code is stored
   steps:
     - name: create-dockerfile
       computeResources:
@@ -72,11 +72,14 @@ spec:
         limits:
           memory: 5Gi
       image: quay.io/cloudservices/frontend-build-container:latest
+      volumeMounts:
+        - mountPath: /var/workdir
+          name: workdir
       script: |
         #!/usr/bin/env sh
         set -xe
 
-        source_path=$(workspaces.source.path)/$(params.subdirectory)/$(params.path-context)
+        source_path=/var/workdir/$(params.subdirectory)/$(params.path-context)
 
         cp -r  $source_path/. /workspace
         cd /container_workspace

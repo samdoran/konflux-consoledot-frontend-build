@@ -6,8 +6,9 @@ metadata:
 spec:
   description: >-
     Tekton task to get the env variables of a workspace using build_deploy.sh
-  workspaces:
-    - name: source
+  volumes:
+    - name: workdir
+      emptyDir: {}
   params:
     - default: "source"
       description: directory in the `output` workspace to clone the repo into.
@@ -57,18 +58,22 @@ spec:
   steps:
     - name: parse-build-deploy-script
       image: registry.access.redhat.com/ubi9/ubi-minimal:9.3-1361.1699548032
+      volumeMounts:
+        - mountPath: /var/workdir
+          name: workdir
       script: |
         #!/bin/bash
         set -ex
 
-        ls $(workspaces.source.path)
+        ls /var/workdir
+        mount
 
         # function to convert variables from kebab-case to SCREAM_SNAKE_CASE
         function convert_var_name() {
           echo "$1" | tr '-' '_' | tr '[:lower:]' '[:upper:]'
         }
 
-        cd $(workspaces.source.path)/$(params.subdirectory)\
+        cd /var/workdir/$(params.subdirectory)\
         /$(params.path-context)
 
         script_path=build_deploy.sh
