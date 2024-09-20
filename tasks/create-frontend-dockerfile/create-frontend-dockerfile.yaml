@@ -92,6 +92,12 @@ spec:
         cd /container_workspace
         bash universal_build.sh
 
+        echo "Generated Dockerfile"
+        cat Dockerfile
+
+        echo "Generated addyfile"
+        cat Caddyfile
+
         cp Dockerfile $source_path
         cp Caddyfile $source_path
         cp -r dist/ $source_path
