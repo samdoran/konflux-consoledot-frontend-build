@@ -77,8 +77,7 @@ spec:
         #!/bin/bash
         set -ex
 
-        ls /var/workdir
-        mount
+        ls /var/workdir/source
 
         # function to convert variables from kebab-case to SCREAM_SNAKE_CASE
         function convert_var_name() {
