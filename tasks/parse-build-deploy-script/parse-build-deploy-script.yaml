@@ -58,6 +58,12 @@ spec:
     - name: dist-folder
       type: string
       description: directory where the app.info.json will be written
+
+  stepTemplate:
+    volumeMounts:
+      - mountPath: /var/workdir
+        name: workdir
+
   steps:
     - name: use-trusted-artifact
       image: quay.io/redhat-appstudio/build-trusted-artifacts:latest@sha256:a390d28f69d61ab38aadf78b7c9b21ed09b79687bddae4cf1d02616bef5d7da7
@@ -67,9 +73,6 @@ spec:
 
     - name: parse-build-deploy-script
       image: registry.access.redhat.com/ubi9/ubi-minimal:9.3-1361.1699548032
-      volumeMounts:
-        - mountPath: /var/workdir
-          name: workdir
       script: |
         #!/bin/bash
         set -ex
