@@ -61,6 +61,8 @@ spec:
         #!/bin/bash
         set -ex
 
+        ls $(workspaces.source.path)
+
         # function to convert variables from kebab-case to SCREAM_SNAKE_CASE
         function convert_var_name() {
           echo "$1" | tr '-' '_' | tr '[:lower:]' '[:upper:]'
