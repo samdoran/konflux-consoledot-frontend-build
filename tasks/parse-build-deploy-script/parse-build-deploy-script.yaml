@@ -18,6 +18,9 @@ spec:
       default: ""
       description: path context directory inside the repo
       type: string
+    - name: source_artifact
+      type: string
+
   results:
     - name: component
       type: string
@@ -56,6 +59,12 @@ spec:
       type: string
       description: directory where the app.info.json will be written
   steps:
+    - name: use-trusted-artifact
+      image: quay.io/redhat-appstudio/build-trusted-artifacts:latest@sha256:a390d28f69d61ab38aadf78b7c9b21ed09b79687bddae4cf1d02616bef5d7da7
+      args:
+        - use
+        - $(params.source_artifact)=/var/workdir/source
+
     - name: parse-build-deploy-script
       image: registry.access.redhat.com/ubi9/ubi-minimal:9.3-1361.1699548032
       volumeMounts:

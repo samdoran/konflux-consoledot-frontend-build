@@ -64,7 +64,14 @@ spec:
       type: string
       description: directory where the app.info.json will be written
       default: ""
+    - name: source_artifact
+      type: string
   steps:
+    - name: use-trusted-artifact
+      image: quay.io/redhat-appstudio/build-trusted-artifacts:latest@sha256:a390d28f69d61ab38aadf78b7c9b21ed09b79687bddae4cf1d02616bef5d7da7
+      args:
+        - use
+        - $(params.source_artifact)=/var/workdir/source
     - name: create-dockerfile
       computeResources:
         requests:
